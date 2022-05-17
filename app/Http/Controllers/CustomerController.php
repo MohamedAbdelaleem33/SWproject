@@ -55,6 +55,8 @@ class CustomerController extends Controller
             $fileName = time().'.'.$extension;
             $file->move('uploads/customers/',$fileName);
             $customer->image = $fileName;
+        }else{
+            $customer->image = 'user.png';
         }
         $customer->save();
 

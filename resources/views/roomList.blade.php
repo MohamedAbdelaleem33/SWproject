@@ -7,7 +7,7 @@
 
 <div class="sidenav">
     <div>
-        <form method="POST"  action="/cars/{{$pickupDate}}/{{$dropoffDate}}/{{$location}}/{{$numOfDays}}" enctype="multipart/form-data">
+        <form method="POST"  action="/rooms/{{$pickupDate}}/{{$dropoffDate}}/{{$location}}/{{$numOfDays}}" enctype="multipart/form-data">
         @csrf
             <div class="accordion" id="accordionPanelsStayOpenExample">
                 <div class="accordion-item">
