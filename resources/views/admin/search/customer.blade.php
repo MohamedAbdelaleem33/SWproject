@@ -41,11 +41,11 @@
         <div class="card-header">
             <div class="row">
                 <div class="col">
-                    <img class="img" src="{{ asset('uploads/customers/'.$customer->image) }}" alt="User" width="100px" height="100px" style="border-radius: 50%;">
+                    <img class="img" src="{{ asset('uploads/customers/'.$customer->image) }}" alt="User" width="100px" height="100px" style="border-radius: 20%;">
                 </div>
                 <div class="col">
                     Name: {{$customer->fname}} {{$customer->lname}}<br>
-                    License: {{$customer->license_no}}<br>
+                    SSN: {{$customer->SSN}}<br>
                     Age: {{$customer->age}}<br>
                     Gender: {{$customer->gender}}<br>
                     Phone: {{$customer->phone}}<br>
@@ -59,13 +59,12 @@
                     <thead>
                         <tr>
                             <th>Res Id</th>
-                            <th>Plate Id</th>
-                            <th>Cust Id</th>
+                            <th>Room Id</th>
+                            <th>User Id</th>
                             <th>Amount</th>
                             <th>Start Date</th>
                             <th>End Date</th>
-                            <th>Pickup</th>
-                            <th>Dropoff</th>
+                            <th>Location</th>
                             <!-- <th class="nosort">&nbsp;</th>
                             <th class="nosort">&nbsp;</th>
                             <th class="nosort">&nbsp;</th> -->
@@ -78,13 +77,12 @@
                         @foreach($reservations as $reservation)
                         <tr>
                             <td>{{$reservation->res_id}}</td>
-                            <td>{{$reservation->plate_id}}</td>
+                            <td>{{$reservation->room_id}}</td>
                             <td>{{$reservation->user_id}}</td>
                             <th>{{$reservation->total_amount}}</th>
                             <th>{{$reservation->start_date}}</th>
                             <td>{{$reservation->end_date}}</td>
-                            <td>{{$reservation->pickup_location}}</td>
-                            <td>{{$reservation->dropoff_location}}</td>
+                            <td>{{$reservation->location}}</td>
                         </tr>
                         @endforeach
                         @else

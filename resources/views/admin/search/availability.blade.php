@@ -42,10 +42,9 @@
                 <table id="data_table" class="table">
                     <thead>
                         <tr>
-                            <th>Plate Id</th>
-                            <th>Manufacturer</th>
-                            <th>Model</th>
-                            <th>Year</th>
+                            <th>Room ID</th>
+                            <th>Type</th>
+                            <th>View</th>
                             <th>Availability</th>
                             <!-- <th class="nosort">&nbsp;</th>
                             <th class="nosort">&nbsp;</th>
@@ -55,22 +54,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($cars as $car)
+                        @foreach($rooms as $room)
                         <tr>
-                            <td>{{$car->plate_id}}</td>
-                            <td>{{$car->manufacturer}}</td>
-                            <th>{{$car->model}}</th>
-                            <th>{{$car->year}}</th>
+                            <td>{{$room->room_id}}</td>
+                            <td>{{$room->type}}</td>
+                            <th>{{$room->view}}</th>
                             @php($available=1)
                             @foreach($reservations as $reservation)
-                                @if($reservation->plate_id == $car->plate_id)
+                                @if($reservation->room_id == $room->room_id)
                                     @php($available=0)
                                 @endif
                             @endforeach
                             @if($available==1)
                                 <td>Available</td>
                             @else
-                                <td>Rented</td>
+                                <td>Not Available</td>
                             @endif
                         </tr>
                         @endforeach

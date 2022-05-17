@@ -19,11 +19,12 @@ class Reservation extends Model
         'start_date',
         'end_date',
         'total_amount',
-        'pickup_location',
-        'dropoff_location',
-        'plate_id',
+        'location',
+        // 'dropoff_location',
+        'room_id',
         'SSN',
-        'user_id'
+        'user_id',
+        'paid'
     ];
 
     protected $casts = [
@@ -32,6 +33,6 @@ class Reservation extends Model
     ];
 
     public function reservation(){
-        return $this->belongsTo(Car::class,'plate_id','plate_id');
+        return $this->belongsTo(Room::class,'room_id','room_id');
     }
 }

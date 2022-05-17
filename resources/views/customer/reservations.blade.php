@@ -19,13 +19,12 @@
                     <img src="{{ asset('images/'.$reservation->image) }}" width="250px" height="150px" alt="Image" class="myimg">
                         </div>
                             <div class="col-md-4">
-                                <h3>Car: {{$reservation->manufacturer}} {{$reservation->model}}</h3>
-                                <p>Plates: {{$reservation->plate_id}}</p>
-                                <p>Pickup Location: {{$reservation->pickup_location}}</p>
-                                <p>Dropoff Location: {{$reservation->dropoff_location}}</p>
+                                <h3>Type: {{$reservation->type}}</h3>
+                                <p>Room No: {{$reservation->room_id}}</p>
+                                <p>Location: {{$reservation->location}}</p>
                                 <p>Date: {{$reservation->start_date}} to {{$reservation->end_date}}</p>
                             </div>
-                        <a  href="#" data-toggle="modal" data-target="#carModal{{$reservation->res_id}}">
+                        <a  href="#" data-toggle="modal" data-target="#roomModal{{$reservation->res_id}}">
                             <button class="btn btn-primary" type="submit" value="submit" id="submit">View Reservation</button>
                         </a>
                     </div>

@@ -19,10 +19,10 @@
                                     <a href="{{url('dashboard')}}"><i class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
                                 </div>
                                 <div class="nav-item has-sub">
-                                    <a href="javascript:void(0)"><i class="ik ik-layers"></i><span>Cars</span></a>
+                                    <a href="javascript:void(0)"><i class="ik ik-layers"></i><span>Rooms</span></a>
                                     <div class="submenu-content">
-                                        <a href="{{url('admin/cars')}}" class="menu-item"><i class="ik ik-list"></i><span>Show Cars</span></a>
-                                        <a href="/admin/cars/add" class="menu-item"><i class="ik ik-edit"></i><span>Add Car</span></a>
+                                        <a href="{{url('admin/rooms')}}" class="menu-item"><i class="ik ik-list"></i><span>Show Rooms</span></a>
+                                        <a href="/admin/rooms/add" class="menu-item"><i class="ik ik-edit"></i><span>Add Room</span></a>
                                     </div>
                                 </div>
                                 <div class="nav-item has-sub">
@@ -34,22 +34,10 @@
                                 <div class="nav-item has-sub">
                                     <a href="javascript:void(0)"><i class="ik ik-layers"></i><span>Search </span></a>
                                     <div class="submenu-content">
-                                        <a href="/admin/search/cars" class="menu-item"><i class="ik ik-list"></i><span>Cars</span></a>
-                                        <a href="/admin/search/customers" class="menu-item"><i class="ik ik-list"></i><span>Customers</span></a>
+                                        <a href="/admin/search/rooms" class="menu-item"><i class="ik ik-list"></i><span>Rooms</span></a>
+                                        <a href="/admin/search/customers" class="menu-item"><i class="ik ik-list"></i><span>Guests</span></a>
                                         <a href="/admin/search/reservations" class="menu-item"><i class="ik ik-list"></i><span>Reseravtions</span></a>
                                         <a href="/admin/search/availability" class="menu-item"><i class="ik ik-list"></i><span>Availability</span></a>
-                                    </div>
-                                </div>
-                                <div class="nav-item has-sub">
-                                    <a href="javascript:void(0)"><i class="ik ik-layers"></i><span>Filtered Search</span></a>
-                                    <div class="submenu-content">
-                                        <a href="/admin/filteredSearch/cars" class="menu-item"><i class="ik ik-list"></i><span>Cars</span></a>
-                                    </div>
-                                </div>
-                                <div class="nav-item has-sub">
-                                    <a href="javascript:void(0)"><i class="ik ik-layers"></i><span>Reports</span></a>
-                                    <div class="submenu-content">
-                                        <a href="/admin/reports/periodicReservations" class="menu-item"><i class="ik ik-list"></i><span>Periodic Reservations</span></a>
                                     </div>
                                 </div>
                             </nav>

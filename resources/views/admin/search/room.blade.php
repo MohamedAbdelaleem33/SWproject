@@ -9,7 +9,7 @@
                 <i class="ik ik-inbox bg-blue"></i>
                 <div class="d-inline">
                     <h5>Reservations</h5>
-                    <span>List of all Reservations</span>
+                    <span>Room Id: {{$room->room_id}} </span>
                 </div>
             </div>
         </div>
@@ -20,7 +20,7 @@
                         <a href="/dashboard"><i class="ik ik-home"></i></a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="/admin/reservations">Reservations</a>
+                        <a href="/admin/search/rooms">Search</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">Index</li>
                 </ol>
@@ -38,14 +38,36 @@
             </div>
         @endif
         <div class="card">
-            <div class="card-header"><h3>Data Table</h3></div>
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6">
+                    <img class="img" src="{{ asset('images/'.$room->image) }}" alt="room" width="250px" height="200px" style="border-radius: 15%;">
+                </div>
+                <div class="col-md-3">
+                    Room ID: {{$room->room_id}}<br>
+                    Type: {{$room->type}}<br>
+                    View: {{$room->view}} View<br>
+                    Branch: {{$room->branchNo}}<br>
+                </div>
+                <div class="col-md-3">
+                    TV: {{$room->TV}}<br>
+                    Refrigeratoor: {{$room->refrigerator}}<br>
+                    @if($room->status == 1)
+                    Status: Available<br>
+                    @else
+                    Status: Maintenance<br>
+                    @endif
+                    Price: {{$room->price}}<br>
+                </div>
+                </div>
+            </div>
             <div class="card-body">
                 <table id="data_table" class="table">
                     <thead>
                         <tr>
-                            <th>Res Id</th>
-                            <th>Room Id</th>
-                            <th>User Id</th>
+                            <th>Res ID</th>
+                            <th>Room ID</th>
+                            <th>Guest ID</th>
                             <th>Amount</th>
                             <th>Start Date</th>
                             <th>End Date</th>
@@ -53,7 +75,7 @@
                             <!-- <th class="nosort">&nbsp;</th>
                             <th class="nosort">&nbsp;</th>
                             <th class="nosort">&nbsp;</th> -->
-                            <th class="nosort">&nbsp;</th>
+                            <th></th>
 
                         </tr>
                     </thead>
@@ -71,7 +93,7 @@
                         </tr>
                         @endforeach
                         @else
-                        <td>No Rooms To Display</td>
+                        <td>No Reseravtions To Display</td>
                         @endif
                     </tbody>
                 </table>

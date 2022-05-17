@@ -42,14 +42,13 @@
                 <table id="data_table" class="table">
                     <thead>
                         <tr>
-                            <th>Res Id</th>
-                            <th>Plate Id</th>
-                            <th>Cust Id</th>
+                            <th>Res ID</th>
+                            <th>Room ID</th>
+                            <th>User ID</th>
                             <th>Amount</th>
                             <th>Start Date</th>
                             <th>End Date</th>
-                            <th>Pickup</th>
-                            <th>Dropoff</th>
+                            <th>Location</th>
                             <!-- <th class="nosort">&nbsp;</th>
                             <th class="nosort">&nbsp;</th>
                             <th class="nosort">&nbsp;</th> -->
@@ -62,13 +61,12 @@
                         @foreach($reservations as $reservation)
                         <tr>
                             <td>{{$reservation->res_id}}</td>
-                            <td>{{$reservation->plate_id}}</td>
+                            <td>{{$reservation->room_id}}</td>
                             <td>{{$reservation->user_id}}</td>
                             <th>{{$reservation->total_amount}}</th>
                             <th>{{$reservation->start_date}}</th>
                             <td>{{$reservation->end_date}}</td>
-                            <td>{{$reservation->pickup_location}}</td>
-                            <td>{{$reservation->dropoff_location}}</td>
+                            <td>{{$reservation->location}}</td>
                         </tr>
                         @endforeach
                         @else

@@ -47,15 +47,6 @@
                                     @enderror
                             </div>
                             <div class="form-group mb-3">
-                                <label for="">License No</label>
-                                <input type="text" name="license_no" class="form-control @error('license_no') is-invalid @enderror" value="{{old('license_no')}}">
-                                    @error('license_no')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                            </div>
-                            <div class="form-group mb-3">
                                 <label for="">City</label>
                                 <input type="text" name="city" class="form-control @error('city') is-invalid @enderror" value="{{old('city')}}">
                                     @error('city')

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'SSN',
         'user_id',
@@ -16,7 +15,7 @@ class Customer extends Model
         'lname',
         'age',
         'gender',
-        'license_no',
+        // 'license_no',
         'phone',
         'city',
         'country',
@@ -27,4 +26,3 @@ class Customer extends Model
         return $this->belongsTo(User::class,'id','user_id');
     }
 }
-

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Reservation;
-use App\Models\Car;
+use App\Models\Room;
 use App\Models\Customer;
 
 
@@ -13,24 +13,24 @@ use App\Models\Customer;
 class AdminSearchController extends Controller
 {
     //
-    public function searchCars(){
+    public function searchRooms(){
 
-        $cars = Car::get();
-        return view('admin.search.cars',[
-            'cars'=>$cars
+        $rooms = Room::get();
+        return view('admin.search.rooms',[
+            'rooms'=>$rooms
         ]);
     }
 
-    public function showFilteredCar($plate_id){
+    public function showFilteredRooms($room_id){
 
-        $reservations = Reservation::where('plate_id','=',$plate_id)->get();
-        $reseravtionsXcars = Reservation::join('cars','cars.plate_id','=','reservations.plate_id')->get()
-        ->where('plate_id','=',$plate_id)->first();
-        //If car not reserved
-        $carSearched = Car::where('plate_id','=',$plate_id)->first();
-        return view('admin.search.car',[
+        $reservations = Reservation::where('room_id','=',$room_id)->get();
+        $reseravtionsXrooms = Reservation::join('rooms','rooms.room_id','=','reservations.room_id')->get()
+        ->where('room_id','=',$room_id)->first();
+        //If room not reserved
+        $roomSearched = Room::where('room_id','=',$room_id)->first();
+        return view('admin.search.room',[
             'reservations'=>$reservations,
-            'car'=>$carSearched
+            'room'=>$roomSearched
         ]);
 
     }
@@ -81,13 +81,13 @@ class AdminSearchController extends Controller
         $pickDate = $request->input('pickupDate');
 
         $reservations = Reservation::where('start_date','=',$pickDate)->get();
-        $cars = Car::get();
+        $rooms = Room::get();
         // $reseravtionsXcustomers = Reservation::join('customers','customers.user_id','=','reservations.user_id')->get()
         // ->where('user_id','=',$user_id)->first();
         return view('admin.search.availability',[
             'reservations'=>$reservations,
             'pickupDate'=>$pickDate,
-            'cars'=>$cars
+            'rooms'=>$rooms
         ]);
 
     }   

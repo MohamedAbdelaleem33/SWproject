@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-    <title>PHPJabbers.com | Free Car Rental Website Template</title>
+    <title>Hotel Booking System</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -30,9 +30,9 @@
           <div class="item item-3">
             <div class="img-fill">
                 <div class="text-content">
-                  <h4>Car Rental</h4>
-                  <p>Safety Guranteed</p>
-                  <a href="/home" class="filled-button">Find Your Vehicle Now !</a>
+                  <h4>Hotel Booking</h4>
+                  <p>Your Home Away From Home</p>
+                  <a href="/home" class="filled-button">Find Your Room Now !</a>
                 </div>
             </div>
           </div>

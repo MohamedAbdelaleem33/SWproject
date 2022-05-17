@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use App\Models\Car;
+use App\Models\Room;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 
@@ -32,7 +32,6 @@ class CustomerController extends Controller
             'lname'=>'required|regex:/^[\pL\s\-]+$/u',
             'ssn'=>'required|numeric',
             'phone'=>'required|numeric',
-            'license_no'=>'required',
             'age'=>'required|numeric',
             'city'=>'required|alpha',
             'country'=>'required|alpha',
@@ -44,7 +43,6 @@ class CustomerController extends Controller
         $customer->fname = $request->input('fname');
         $customer->lname = $request->input('lname');
         $customer->SSN = $request->input('ssn');
-        $customer->license_no = $request->input('license_no');
         $customer->city = $request->input('city');
         $customer->country = $request->input('country');
         $customer->phone = $request->input('phone');
@@ -67,12 +65,12 @@ class CustomerController extends Controller
 
         $user = auth()->user();
         // $reservations = Reservation::where('user_id','=',$user->id)->orderBy('start_date')->get();
-        $reservationsXcars = Car::join('car_types','car_types.type','=','cars.type')
-        ->join('reservations','reservations.plate_id','=','cars.plate_id')
+        $reservationsXrooms = Room::join('room_types','room_types.type','=','rooms.type')
+        ->join('reservations','reservations.room_id','=','rooms.room_id')
         ->where('user_id','=',$user->id)->orderBy('start_date')->get();
 
         return view('customer.reservations',[
-            'reservations'=>$reservationsXcars
+            'reservations'=>$reservationsXrooms
         ]);
     }
 

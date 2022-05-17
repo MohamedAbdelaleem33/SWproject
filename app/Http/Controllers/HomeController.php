@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Car;
-use App\Models\Office;
+use App\Models\Branch;
 use DB;
 
 
@@ -27,7 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {  
-        $locations = Office::groupby('location')->pluck('location');
+        $locations = Branch::groupby('location')->pluck('location');
         return view('home',[
             "locations"=>$locations
         ]);

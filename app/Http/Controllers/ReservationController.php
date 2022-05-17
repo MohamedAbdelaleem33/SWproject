@@ -6,7 +6,8 @@ use App\Models\Reservation;
 use Illuminate\Http\Request;
 use App\Models\Car;
 use App\Models\Customer;
-use App\Models\Office;
+use App\Models\Room;
+use App\Models\Branch;
 
 use Illuminate\Validation\Concerns\FilterEmailValidation;
 
@@ -22,7 +23,7 @@ class ReservationController extends Controller
 
     }
 
-    public function reserve($id,$pickupDate,$dropoffDate,$pickupLocation,$dropoffLocation,$numOfDays){
+    public function reserve($id,$pickupDate,$dropoffDate,$location,$numOfDays){
 
         $reservation = new Reservation();
         $reservation->start_date = $pickupDate;
@@ -31,12 +32,11 @@ class ReservationController extends Controller
 
         $reservation->res_id = $getResId+1;
         $reservation->end_date = $dropoffDate;
-        $reservation->pickup_location = $pickupLocation;
-        $reservation->dropoff_location = $dropoffLocation;
+        $reservation->location = $location;
 
-        $carSelected = Car::where('plate_id','=',$id)->first();
-        $reservation->total_amount = $carSelected->price* $numOfDays;
-        $reservation->plate_id = $id;
+        $roomSelected = Room::where('room_id','=',$id)->first();
+        $reservation->total_amount = $roomSelected->price* $numOfDays;
+        $reservation->room_id = $id;
 
         $user = auth()->user();
 
@@ -47,7 +47,7 @@ class ReservationController extends Controller
         $reservation->paid = 0;
         $reservation->save();
 
-        $locations = Office::groupby('location')->pluck('location');
+        $locations = Branch::groupby('location')->pluck('location');
 
 
         // return redirect()->back()->with('status','Reserved Successfully');
@@ -58,24 +58,20 @@ class ReservationController extends Controller
     public function datePicker(Request $request){
 
         $this->validate($request,[
-            'pickupLocation'=>'required|regex:/^[\pL\s\-]+$/u',
-            'dropoffLocation'=>'required|regex:/^[\pL\s\-]+$/u',
+            'location'=>'required|regex:/^[\pL\s\-]+$/u',
             'pickupDate'=>'required',
             'dropoffDate'=>'required'
         ]);
 
         
-        // $cars = Car::get();
-        $manufacturers = Car::groupBy('manufacturer')->pluck('manufacturer');
-        $models = Car::groupBy('model')->pluck('model');
-        $years = Car::groupBy('year')->pluck('year');
-        $types = Car::groupBy('type')->pluck('type');
-        $transmissions = Car::groupBy('transmission')->pluck('transmission');
+        $views = Room::groupBy('view')->pluck('view');
+        $tvs = Room::groupBy('TV')->pluck('TV');
+        $refrigerators = Room::groupBy('refrigerator')->pluck('refrigerator');
+        $types = Room::groupBy('type')->pluck('type');
 
         $pickupDate = $request->input('pickupDate');
         $dropoffDate = $request->input('dropoffDate');
-        $pickupLocation = $request->input('pickupLocation');
-        $dropoffLocation = $request->input('dropoffLocation');
+        $location = $request->input('location');
 
 
         $reservations = Reservation::where([
@@ -88,13 +84,12 @@ class ReservationController extends Controller
         ->orWhere([
             ['start_date','<=',$pickupDate],
             ['end_date','>=',$dropoffDate]
-        ])->pluck('plate_id');
+        ])->pluck('room_id');
 
-        // $carsXoffices = Car::join('offices','cars.officeNo','=','offices.officeNo');
-        $office = Office::where('location','=',$pickupLocation)->pluck('officeNo');
+        $branch = Branch::where('location','=',$location)->pluck('branchNo');
 
-        $cars = Car::whereNotIn('plate_id',$reservations)
-        ->whereIn('officeNo',$office)
+        $rooms = Room::whereNotIn('room_id',$reservations)
+        ->whereIn('branchNo',$branch)
         ->where('status','=',1)
         ->get();
 
@@ -103,86 +98,83 @@ class ReservationController extends Controller
 
         $numOfDays = $dropoffDate2->diffInDays($pickupDate2);
         
-        return view('carList',[
-            'cars'=>$cars,
-            'manufacturers'=>$manufacturers,
-            'filteredManufacturers'=>$manufacturers,
-            'models'=>$models,
-            'years'=>$years,
+        return view('roomList',[
+            'rooms'=>$rooms,
+            'views'=>$views,
+            'filteredViews'=>$views,
+            'tvs'=>$tvs,
+            'refrigerators'=>$refrigerators,
             'types'=>$types,
-            'transmissions'=>$transmissions,
-            'filteredModels'=>$models,
-            'filteredYears'=>$years,
+            'filteredTvs'=>$tvs,
+            'filteredRefrigerators'=>$refrigerators,
             'filteredTypes'=>$types,
-            'filteredTransmissions'=>$transmissions,
             'pickupDate'=>$pickupDate,
             'dropoffDate'=>$dropoffDate,
-            'pickupLocation'=>$pickupLocation,
-            'dropoffLocation'=>$dropoffLocation,
+            'location'=>$location,
             'numOfDays'=>$numOfDays
         ]);
 
     }
 
-    public function filter(Request $request,$pickupDate,$dropoffDate,$pickupLocation,$dropoffLocation,$numOfDays)
+    public function filter(Request $request,$pickupDate,$dropoffDate,$location,$numOfDays)
     {
         //Filter according to filled checkboxes
-        $manufacturers = Car::groupBy('manufacturer')->pluck('manufacturer');
+        $views = Room::groupBy('view')->pluck('view');
 
         $i = 0;
-        $filteredManufacturers=null;
-        foreach($manufacturers as $manufacturer){
-            if($request->input($manufacturer)){
-            $filteredManufacturers[$i]=$manufacturer;
+        $filteredViews=null;
+        foreach($views as $view){
+            if($request->input($view)){
+            $filteredViews[$i]=$view;
             }
             $i++; 
         }
         $i = 0;
-        if($filteredManufacturers==null){
-            foreach($manufacturers as $manufacturer){
-                $filteredManufacturers[$i]=$manufacturer;
+        if($filteredViews==null){
+            foreach($views as $view){
+                $filteredViews[$i]=$view;
                 $i++; 
             }
         }
-        $filteredManufacturers = Car::whereIn('manufacturer',$filteredManufacturers)->groupBy('manufacturer')->pluck('manufacturer');
+        $filteredViews = Room::whereIn('view',$filteredViews)->groupBy('view')->pluck('view');
 
-        $models = Car::groupBy('model')->pluck('model');
+        $tvs = Room::groupBy('tv')->pluck('tv');
         $i = 0;
-        $filteredModels=null;
-        foreach($models as $model){
-            if($request->input($model)){
-            $filteredModels[$i]=$model;
+        $filteredTvs=null;
+        foreach($tvs as $tv){
+            if($request->input($tv)){
+            $filteredTvs[$i]=$tv;
             }
             $i++; 
         }
         $i = 0;
-        if($filteredModels==null){
-            foreach($models as $model){
-                $filteredModels[$i]=$model;
+        if($filteredTvs==null){
+            foreach($tvs as $tv){
+                $filteredTvs[$i]=$tv;
                 $i++; 
             }
         }
-        $filteredModels = Car::whereIn('model',$filteredModels)->groupBy('model')->pluck('model');
+        $filteredTvs = Room::whereIn('tv',$filteredTvs)->groupBy('tv')->pluck('tv');
 
-        $years = Car::groupBy('year')->pluck('year');
+        $refrigerators = Room::groupBy('refrigerator')->pluck('refrigerator');
         $i = 0;
-        $filteredYears=null;
-        foreach($years as $year){
-            if($request->input($year)){
-            $filteredYears[$i]=$year;
+        $filteredRefrigerators=null;
+        foreach($refrigerators as $refrigerator){
+            if($request->input($refrigerator)){
+            $filteredRefrigerators[$i]=$refrigerator;
             }
             $i++; 
         }
         $i = 0;
-        if($filteredYears==null){
-            foreach($years as $year){
-                $filteredYears[$i]=$year;
+        if($filteredRefrigerators==null){
+            foreach($refrigerators as $refrigerator){
+                $filteredRefrigerators[$i]=$refrigerator;
                 $i++; 
             }
         }
-        $filteredYears = Car::whereIn('year',$filteredYears)->groupBy('year')->pluck('year');
+        $filteredRefrigerators = Room::whereIn('refrigerator',$filteredRefrigerators)->groupBy('refrigerator')->pluck('refrigerator');
 
-        $types = Car::groupBy('type')->pluck('type');
+        $types = Room::groupBy('type')->pluck('type');
         $i = 0;
         $filteredTypes=null;
         foreach($types as $type){
@@ -198,27 +190,9 @@ class ReservationController extends Controller
                 $i++; 
             }
         }
-        $filteredTypes = Car::whereIn('type',$filteredTypes)->groupBy('type')->pluck('type');
+        $filteredTypes = Room::whereIn('type',$filteredTypes)->groupBy('type')->pluck('type');
 
-        $transmissions = Car::groupBy('transmission')->pluck('transmission');
-        $i = 0;
-        $filteredTransmissions=null;
-        foreach($transmissions as $transmission){
-            if($request->input($transmission)){
-            $filteredTransmissions[$i]=$transmission;
-            }
-            $i++; 
-        }
-        $i = 0;
-        if($filteredTransmissions==null){
-            foreach($transmissions as $transmission){
-                $filteredTransmissions[$i]=$transmission;
-                $i++; 
-            }
-        }
-        $filteredTransmissions = Car::whereIn('transmission',$filteredTransmissions)->groupBy('transmission')->pluck('transmission');
-
-        //Get Available Cars
+        //Get Available Rooms
         $reservations = Reservation::where([
             ['start_date','<=',$dropoffDate],
             ['start_date','>=',$pickupDate]
@@ -229,41 +203,37 @@ class ReservationController extends Controller
         ->orWhere([
             ['start_date','<=',$pickupDate],
             ['end_date','>=',$dropoffDate]
-        ])->pluck('plate_id');
+        ])->pluck('room_id');
 
-        $office = Office::where('location','=',$pickupLocation)->pluck('officeNo');
+        $branch = Branch::where('location','=',$location)->pluck('branchNo');
 
-        $cars = Car::whereNotIn('plate_id',$reservations)
-        ->whereIn('officeNo',$office)
-        ->whereIn('manufacturer',$filteredManufacturers)
-        ->whereIn('model',$filteredModels)
-        ->whereIn('year',$filteredYears)
+        $rooms = Room::whereNotIn('room_id',$reservations)
+        ->whereIn('branchNo',$branch)
+        ->whereIn('tv',$filteredTvs)
+        ->whereIn('view',$filteredViews)
+        ->whereIn('refrigerator',$filteredRefrigerators)
         ->whereIn('type',$filteredTypes)
-        ->whereIn('transmission',$filteredTransmissions)
         ->where('status','=',1)
         ->get();
 
-        if($cars == null){
+        if($rooms == null){
             return redirect('/home')->with('status','No Matches Found');
         }
 
-        return view('carList',[
-            'cars'=>$cars,
-            'manufacturers'=>$manufacturers,
-            'models'=>$models,
-            'years'=>$years,
+        return view('roomList',[
+            'rooms'=>$rooms,
+            'views'=>$views,
+            'filteredViews'=>$views,
+            'tvs'=>$tvs,
+            'refrigerators'=>$refrigerators,
             'types'=>$types,
-            'transmissions'=>$transmissions,
-            'filteredManufacturers'=>$filteredManufacturers,
-            'filteredModels'=>$filteredModels,
-            'filteredYears'=>$filteredYears,
-            'filteredTypes'=>$filteredTypes,
-            'filteredTransmissions'=>$filteredTransmissions,
+            'filteredTvs'=>$tvs,
+            'filteredRefrigerators'=>$refrigerators,
+            'filteredTypes'=>$types,
             'pickupDate'=>$pickupDate,
             'dropoffDate'=>$dropoffDate,
-            'pickupLocation'=>$pickupLocation,
-            'dropoffLocation'=>$dropoffLocation,
-            'numOfDays'=>$numOfDays    
+            'location'=>$location,
+            'numOfDays'=>$numOfDays
         ]);    
     }
 }
